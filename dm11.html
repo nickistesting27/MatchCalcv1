@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Match Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        .container h1 {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .container img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .container p {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .container p em {
+            font-weight: bold;
+        }
+        .container input, .container button, .suggested-donation {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .container button {
+            background: #001f3f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background: #001533;
+        }
+        .suggested-donation {
+            background: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .suggested-donation:hover {
+            background: #c82333;
+        }
+        .result {
+            text-align: center;
+            font-size: 2em;
+            color: red;
+        }
+        .warning {
+            color: red;
+            font-size: 1em;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .footer a {
+            color: #555;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .contribute-button {
+            display: none;
+            margin-top: 20px;
+            background: #001f3f;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .contribute-button:hover {
+            background: #001533;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="logo (4).png" alt="Nick Robbins Logo">
+        <h1>Matching Funds Calculator</h1>
+        <p><em>Through the New York City Public Campaign Finance Board's Matching Funds Program, donations from $10 - $175, made by New York City residents, are matched 8-to-1! Enter your contribution amount to see your total impact.</em></p>
+        <input type="number" id="donationAmount" placeholder="Enter your donation amount" />
+        <button onclick="calculateMatch()">What Is My Donation Worth?</button>
+        <div>
+            <button class="suggested-donation" onclick="setDonation(10)">Donate $10</button>
+            <button class="suggested-donation" onclick="setDonation(50)">Donate $50</button>
+            <button class="suggested-donation" onclick="setDonation(100)">Donate $100</button>
+            <button class="suggested-donation" onclick="setDonation(175)">Donate $175</button>
+        </div>
+        <div class="result" id="result"></div>
+        <div class="warning" id="warning"></div>
+        <a id="contributeButton" class="contribute-button" href="https://nyccfb.info" target="_blank">Click Here To Make Your Contribution</a>
+    </div>
+    <div class="footer">
+        Powered by <a href="https://whitewood.nyc" target="_blank">Whitewood</a>
+    </div>
+    <script>
+        function calculateMatch() {
+            var donationAmount = parseFloat(document.getElementById('donationAmount').value);
+            var warningMessage = '';
+            var contributeButton = document.getElementById('contributeButton');
+            if (donationAmount && donationAmount > 0) {
+                var matchableAmount = Math.min(donationAmount, 175);
+                var matchAmount = matchableAmount * 8;
+                var totalValue = donationAmount + matchAmount;
+                document.getElementById('result').innerText = 'Total Value: $' + totalValue.toFixed(2);
+                contributeButton.style.display = 'block';
+                if (donationAmount > 175) {
+                    warningMessage = 'Only the first $175 of your donation is matched.';
+                }
+            } else {
+                document.getElementById('result').innerText = 'Please enter a valid donation amount.';
+                contributeButton.style.display = 'none';
+            }
+            document.getElementById('warning').innerText = warningMessage;
+        }
+
+        function setDonation(amount) {
+            document.getElementById('donationAmount').value = amount;
+            calculateMatch();
+        }
+    </script>
+</body>
+</html>
